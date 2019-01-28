@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>Корзина заказов</title>
+<meta charset="utf-8">
+<script type="text/javascript" src="jquery-3.3.1.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function (){   //данные, которые будут отправлены и записаны в бд
+	$("#button").bind("click", function (){
+		var quantity = $('.goods').val();
+		var ip = $('#ip').val();
+		var timeAndDate = $('#date').val();
+	
+	//В строке ниже я пробовал правильно применить метод getJSON(), по своему синтаксису:
+	//getJSON(url,данные,function(ответ,текст с кодом статуса,xhr)) он наиболее подходит для выполнения запроса
+	//но что-то я не могу правильно все применить и запрос не уходит
+		$.getJSON({'add_to_cart.php', data:({quantity:quantity,ip:ip,timeAndDate:timeAndDate}),function(data,xhr,Statustext){
+		alert("Товар добавлен в корзину"+xhr.status)};
+		error: function(xhr, statusText,err){
+		alert("Ошибка" + xhr.status);}
+		})
+	})	
+
+</script>	
+<link href="Style.css" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+<script>
+function change(objName, min, max, step) {  //устанавливаю функцию, которая изменяет значение в поле ввода при нажатии на =+
+var obj = document.getElementById(objName);
+var tmp = +obj.value + step;
+if (tmp<min) tmp=min;
+if (tmp>max) tmp=max;
+obj.value = tmp;
+}
+</script>
+
+
+<div>
+	<!-- помещаю в значения инпутов hidden ip адресс и дату с временем  -->
+	
+	<input type="button" id="click1" value="+" onClick="change('amount',0,10, 1)"/>
+	<input id="amount" class="goods" type="text" value="1" size="1"/>
+	<input type="button" id="click2" value="-" onClick="change('amount',0,10,-1)"/>
+	<input type="hidden" id="ip" value="<?php $_SERVER['REMOTE_ADDR'];?>">
+	<input type="hidden" id="date" value="<?php $time=date('H:i:s d.m.Y');?>">
+	<input type="submit" value="Купить" id="button" name="buy"  class="modal">
+</div>
+
+</body>
+</html>
+
